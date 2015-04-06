@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<pre style="background:#fff;color:#000"><span style="color:#ff5600">import</span> <span style="color:#ff5600">org.json.JSONException</span>;
+<span style="color:#ff5600">import</span> <span style="color:#ff5600">org.json.JSONObject</span>;
+
+<span style="color:#ff5600">public</span> <span style="color:#ff5600">class</span> <span style="color:#21439c">ProfileItem</span> {
+
+    <span style="color:#ff5600">final</span> <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">String</span> NAME <span style="color:#ff5600">=</span> <span style="color:#00a33f">"name"</span>;
+    <span style="color:#ff5600">final</span> <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">String</span> PHONE <span style="color:#ff5600">=</span> <span style="color:#00a33f">"phone"</span>;
+    <span style="color:#ff5600">final</span> <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">String</span> SALE <span style="color:#ff5600">=</span> <span style="color:#00a33f">"sale"</span>;
+
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> name;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> phone;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">double</span> sale;
+
+    <span style="color:#ff5600">public</span> <span style="color:#21439c">ProfileItem</span>(<span style="color:#ff5600">String</span> name, <span style="color:#ff5600">String</span> phone, <span style="color:#ff5600">double</span> sale) {
+        this<span style="color:#ff5600">.</span>name <span style="color:#ff5600">=</span> name;
+        this<span style="color:#ff5600">.</span>phone <span style="color:#ff5600">=</span> phone;
+        this<span style="color:#ff5600">.</span>sale <span style="color:#ff5600">=</span> sale;
+    }
+
+    <span style="color:#ff5600">public</span> <span style="color:#21439c">ProfileItem</span> (<span style="color:#ff5600">JSONObject</span> json) <span style="color:#ff5600">throws</span> <span style="color:#ff5600">JSONException</span> {
+        this<span style="color:#ff5600">.</span>name <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getString(NAME);
+        this<span style="color:#ff5600">.</span>phone <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getString(PHONE);
+        this<span style="color:#ff5600">.</span>sale <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getDouble(SALE);
+    }
+
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">JSONObject</span> <span style="color:#21439c">toJSONObject</span>() {
+        <span style="color:#ff5600">JSONObject</span> result <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">JSONObject</span>();
+        <span style="color:#ff5600">try</span> {
+            result<span style="color:#ff5600">.</span>put(NAME, name);
+            result<span style="color:#ff5600">.</span>put(PHONE, phone);
+            result<span style="color:#ff5600">.</span>put(SALE, sale);
+        } <span style="color:#ff5600">catch</span> (<span style="color:#ff5600">JSONException</span> e) {
+            <span style="color:#919191">// TODO Auto-generated catch block</span>
+            e<span style="color:#ff5600">.</span>printStackTrace();
+        }
+        <span style="color:#ff5600">return</span> result;
+    }
+
+
+}
+
+</pre>
+</body>
+</html>

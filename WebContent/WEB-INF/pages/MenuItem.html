@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<pre style="background:#fff;color:#000"><span style="color:#ff5600">import</span> <span style="color:#ff5600">java.util.ArrayList</span>;
+
+<span style="color:#ff5600">import</span> <span style="color:#ff5600">org.json.JSONArray</span>;
+<span style="color:#ff5600">import</span> <span style="color:#ff5600">org.json.JSONException</span>;
+<span style="color:#ff5600">import</span> <span style="color:#ff5600">org.json.JSONObject</span>;
+
+<span style="color:#ff5600">public</span> <span style="color:#ff5600">class</span> <span style="color:#21439c">MenuItem</span> {
+
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">class</span> <span style="color:#21439c">PriceItem</span> {
+        <span style="color:#ff5600">public</span> <span style="color:#ff5600">int</span> size;
+        <span style="color:#ff5600">public</span> <span style="color:#ff5600">double</span> price;
+    }
+
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">class</span> <span style="color:#21439c">ToppingItem</span> {
+        <span style="color:#ff5600">public</span> <span style="color:#ff5600">int</span> ID;
+        <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> name;
+        <span style="color:#ff5600">public</span> <span style="color:#ff5600">double</span> price;
+    }
+
+
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> article;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> name;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> category;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> img;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> description;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">ArrayList&lt;<span style="color:#ff5600">MenuItem</span>.</span><span style="color:#ff5600">PriceItem</span><span style="color:#ff5600">></span> prices;
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">ArrayList&lt;<span style="color:#ff5600">ToppingItem</span>></span> toppings;
+
+
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> ARTICLE <span style="color:#ff5600">=</span> <span style="color:#00a33f">"article"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> CATEGORY <span style="color:#ff5600">=</span> <span style="color:#00a33f">"category"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> NAME <span style="color:#ff5600">=</span> <span style="color:#00a33f">"name"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> IMG <span style="color:#ff5600">=</span> <span style="color:#00a33f">"img"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> DESCRIPTION <span style="color:#ff5600">=</span> <span style="color:#00a33f">"description"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> PRICE <span style="color:#ff5600">=</span> <span style="color:#00a33f">"price"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> SIZE <span style="color:#ff5600">=</span> <span style="color:#00a33f">"size"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> TOPPINGS <span style="color:#ff5600">=</span> <span style="color:#00a33f">"toppings"</span>;
+    <span style="color:#ff5600">private</span> <span style="color:#ff5600">static</span> <span style="color:#ff5600">final</span> <span style="color:#ff5600">String</span> ID <span style="color:#ff5600">=</span> <span style="color:#00a33f">"ID"</span>;
+
+
+    <span style="color:#ff5600">public</span> <span style="color:#21439c">MenuItem</span>(<span style="color:#ff5600">JSONObject</span> json) <span style="color:#ff5600">throws</span> <span style="color:#ff5600">JSONException</span> {
+        article <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getString(ARTICLE);
+        category <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getString(CATEGORY);
+        name <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getString(NAME);
+        img <span style="color:#ff5600">=</span>json<span style="color:#ff5600">.</span>getString(IMG);
+        description <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getString(DESCRIPTION);
+
+        prices <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">ArrayList&lt;<span style="color:#ff5600">MenuItem</span>.</span><span style="color:#ff5600">PriceItem</span>>();
+        <span style="color:#ff5600">JSONArray</span> jsonPrices <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getJSONArray(PRICE);
+        <span style="color:#ff5600">for</span> (<span style="color:#ff5600">int</span> i<span style="color:#ff5600">=</span>0; i<span style="color:#ff5600">&lt;</span>jsonPrices<span style="color:#ff5600">.</span>length(); i<span style="color:#ff5600">++</span>) {
+            <span style="color:#ff5600">PriceItem</span> priceItem <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">PriceItem</span>();
+            priceItem<span style="color:#ff5600">.</span>size <span style="color:#ff5600">=</span> jsonPrices<span style="color:#ff5600">.</span>getJSONObject(i)<span style="color:#ff5600">.</span>getInt(SIZE);
+            priceItem<span style="color:#ff5600">.</span>price <span style="color:#ff5600">=</span> jsonPrices<span style="color:#ff5600">.</span>getJSONObject(i)<span style="color:#ff5600">.</span>getDouble(PRICE);
+            prices<span style="color:#ff5600">.</span>add(priceItem);
+        }
+
+        toppings <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">ArrayList&lt;<span style="color:#ff5600">ToppingItem</span>></span>();
+        <span style="color:#ff5600">JSONArray</span> jsonToppings <span style="color:#ff5600">=</span> json<span style="color:#ff5600">.</span>getJSONArray(TOPPINGS);
+        <span style="color:#ff5600">for</span> (<span style="color:#ff5600">int</span> i<span style="color:#ff5600">=</span>0; i<span style="color:#ff5600">&lt;</span>jsonToppings<span style="color:#ff5600">.</span>length(); i<span style="color:#ff5600">++</span>) {
+            <span style="color:#ff5600">ToppingItem</span> toppingItem <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">ToppingItem</span>();
+            <span style="color:#ff5600">toppingItem<span style="color:#ff5600">.</span>ID</span> <span style="color:#ff5600">=</span> jsonToppings<span style="color:#ff5600">.</span>getJSONObject(i)<span style="color:#ff5600">.</span>getInt(ID);
+            toppingItem<span style="color:#ff5600">.</span>name <span style="color:#ff5600">=</span> jsonToppings<span style="color:#ff5600">.</span>getJSONObject(i)<span style="color:#ff5600">.</span>getString(NAME);
+            toppingItem<span style="color:#ff5600">.</span>price <span style="color:#ff5600">=</span> jsonToppings<span style="color:#ff5600">.</span>getJSONObject(i)<span style="color:#ff5600">.</span>getDouble(PRICE);
+            toppings<span style="color:#ff5600">.</span>add(toppingItem);
+
+        }
+    }
+
+
+    <span style="color:#ff5600">public</span> <span style="color:#21439c">MenuItem</span>(<span style="color:#ff5600">String</span> _article, <span style="color:#ff5600">String</span> _name, <span style="color:#ff5600">String</span> _category, <span style="color:#ff5600">String</span> _img, <span style="color:#ff5600">String</span> _description) {
+        article <span style="color:#ff5600">=</span> _article;
+        name <span style="color:#ff5600">=</span> _name;
+        category <span style="color:#ff5600">=</span> _category;
+        img <span style="color:#ff5600">=</span> _img;
+        description <span style="color:#ff5600">=</span> _description;
+        prices <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">ArrayList&lt;<span style="color:#ff5600">MenuItem</span>.</span><span style="color:#ff5600">PriceItem</span>>();
+        toppings <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">ArrayList&lt;<span style="color:#ff5600">MenuItem</span>.</span><span style="color:#ff5600">ToppingItem</span>>();
+    }
+
+    <span style="color:#ff5600">@Deprecated</span>
+    <span style="color:#ff5600">public</span> <span style="color:#21439c">MenuItem</span>(<span style="color:#ff5600">String</span> _article, <span style="color:#ff5600">String</span> _name, <span style="color:#ff5600">String</span> _category, <span style="color:#ff5600">String</span> _img, <span style="color:#ff5600">String</span> _description, <span style="color:#ff5600">double</span> _price) {
+        article <span style="color:#ff5600">=</span> _article;
+        name <span style="color:#ff5600">=</span> _name;
+        category <span style="color:#ff5600">=</span> _category;
+        img <span style="color:#ff5600">=</span> _img;
+        description <span style="color:#ff5600">=</span> _description;
+        prices <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">ArrayList&lt;<span style="color:#ff5600">MenuItem</span>.</span><span style="color:#ff5600">PriceItem</span>>();
+    }
+
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">void</span> <span style="color:#21439c">addPrice</span>(<span style="color:#ff5600">int</span> size, <span style="color:#ff5600">double</span> price) {
+        <span style="color:#ff5600">PriceItem</span> priceItem <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">PriceItem</span>();
+        priceItem<span style="color:#ff5600">.</span>price <span style="color:#ff5600">=</span> price;
+        priceItem<span style="color:#ff5600">.</span>size <span style="color:#ff5600">=</span> size;
+        prices<span style="color:#ff5600">.</span>add(priceItem);
+    }
+
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">void</span> <span style="color:#21439c">addTopping</span>(<span style="color:#ff5600">int</span> toppingId, <span style="color:#ff5600">String</span> name, <span style="color:#ff5600">double</span> price) {
+        <span style="color:#ff5600">ToppingItem</span> toppingItem <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">ToppingItem</span>();
+        <span style="color:#ff5600">toppingItem<span style="color:#ff5600">.</span>ID</span> <span style="color:#ff5600">=</span> toppingId;
+        toppingItem<span style="color:#ff5600">.</span>name <span style="color:#ff5600">=</span> name;
+        toppingItem<span style="color:#ff5600">.</span>price <span style="color:#ff5600">=</span> price;
+        this<span style="color:#ff5600">.</span>toppings<span style="color:#ff5600">.</span>add(toppingItem);
+    }
+
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">JSONObject</span> <span style="color:#21439c">toJSONObject</span>() <span style="color:#ff5600">throws</span> <span style="color:#ff5600">JSONException</span> {
+        <span style="color:#ff5600">JSONObject</span> ob <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">JSONObject</span>();
+        ob<span style="color:#ff5600">.</span>put(ARTICLE, article);
+        ob<span style="color:#ff5600">.</span>put(CATEGORY, category);
+        ob<span style="color:#ff5600">.</span>put(IMG, img);
+        ob<span style="color:#ff5600">.</span>put(DESCRIPTION, description);
+        ob<span style="color:#ff5600">.</span>put(NAME, name);
+
+        <span style="color:#ff5600">JSONArray</span> jsonPrices <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">JSONArray</span>();
+        <span style="color:#ff5600">for</span> (<span style="color:#ff5600">PriceItem</span> priceItem <span style="color:#ff5600">:</span> prices) {
+            <span style="color:#ff5600">JSONObject</span> item <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">JSONObject</span>();
+            item<span style="color:#ff5600">.</span>put(PRICE, priceItem<span style="color:#ff5600">.</span>price);
+            item<span style="color:#ff5600">.</span>put(SIZE, priceItem<span style="color:#ff5600">.</span>size);
+            jsonPrices<span style="color:#ff5600">.</span>put(item);
+        }
+        ob<span style="color:#ff5600">.</span>put(<span style="color:#00a33f">"prices"</span>, jsonPrices);
+
+        <span style="color:#ff5600">JSONArray</span> jsonToppings <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">JSONArray</span>();
+        <span style="color:#ff5600">for</span> (<span style="color:#ff5600">ToppingItem</span> toppingItem <span style="color:#ff5600">:</span> toppings) {
+            <span style="color:#ff5600">JSONObject</span> item <span style="color:#ff5600">=</span> <span style="color:#ff5600">new</span> <span style="color:#ff5600">JSONObject</span>();
+            item<span style="color:#ff5600">.</span>put(ID, <span style="color:#ff5600">toppingItem<span style="color:#ff5600">.</span>ID</span>);
+            item<span style="color:#ff5600">.</span>put(NAME, toppingItem<span style="color:#ff5600">.</span>name);
+            item<span style="color:#ff5600">.</span>put(PRICE, toppingItem<span style="color:#ff5600">.</span>price);
+            jsonToppings<span style="color:#ff5600">.</span>put(item);
+        }
+        ob<span style="color:#ff5600">.</span>put(TOPPINGS, jsonToppings);
+        <span style="color:#ff5600">return</span> ob;
+    }
+
+    <span style="color:#ff5600">@Override</span>
+    <span style="color:#ff5600">public</span> <span style="color:#ff5600">String</span> <span style="color:#21439c">toString</span>() {
+        <span style="color:#ff5600">String</span> s <span style="color:#ff5600">=</span> article <span style="color:#ff5600">+</span> <span style="color:#00a33f">' '</span> <span style="color:#ff5600">+</span> name <span style="color:#ff5600">+</span> <span style="color:#00a33f">' '</span> <span style="color:#ff5600">+</span> category <span style="color:#ff5600">+</span> <span style="color:#00a33f">' '</span> <span style="color:#ff5600">+</span> img <span style="color:#ff5600">+</span> <span style="color:#00a33f">' '</span> <span style="color:#ff5600">+</span> description <span style="color:#ff5600">+</span> <span style="color:#00a33f">' '</span>;
+        <span style="color:#ff5600">for</span> (<span style="color:#ff5600">PriceItem</span> item <span style="color:#ff5600">:</span> prices) {
+            s <span style="color:#ff5600">+=</span> item<span style="color:#ff5600">.</span>size <span style="color:#ff5600">+</span> <span style="color:#00a33f">" - "</span> <span style="color:#ff5600">+</span> item<span style="color:#ff5600">.</span>price <span style="color:#ff5600">+</span> <span style="color:#00a33f">' '</span>;
+        }
+        <span style="color:#ff5600">return</span> s;
+    }
+
+}
+
+</pre>
+</body>
+</html>
