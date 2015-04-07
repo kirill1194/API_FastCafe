@@ -18,9 +18,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 @Path("/getMenu/")
-public class Menu extends BaseResource{
+public class GetMenu extends BaseResource{
 
-	private static Logger log = LogManager.getLogger(Menu.class);
+	private static Logger log = LogManager.getLogger(GetMenu.class);
 
 	@GET
 	@Produces(MEDIA_TYPE_JSON)
