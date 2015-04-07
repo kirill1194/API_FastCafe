@@ -17,25 +17,16 @@ import Services.LOG;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
-
 @Path("/getMenu/")
 public class Menu extends BaseResource{
 
 	private static Logger log = LogManager.getLogger(Menu.class);
-
-	//	@GET
-	//	@Produces(MediaType.APPLICATION_JSON)
-	//	public MenuItem test() {
-	//		MenuItem item = new MenuItem("one", "two", "tralal", "ololo", "tsgfd");
-	//		return item;
-	//	}
 
 	@GET
 	@Produces(MEDIA_TYPE_JSON)
 	public String getMenu() throws SQLWorkException {
 		requestLog(log);
 
-		//		response.setCharacterEncoding("UTF-8");
 		ArrayList<MenuItem> objectResponse = SqlFunctions.getMenu();
 		//здесь костыль для правильного вывода JSONa. Сама либа не может правильно его сделать
 		//ну или я не могу заставить ее это делать. хз

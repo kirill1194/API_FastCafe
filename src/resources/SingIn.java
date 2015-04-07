@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import Exceptions.RequestException;
 import Exceptions.SQLWorkException;
 import SQL.SqlFunctions;
 import Services.LOG;
@@ -21,20 +22,28 @@ import com.sun.jersey.multipart.FormDataParam;
 public class SingIn extends BaseResource {
 	private static final Logger log = LogManager.getLogger(SingIn.class);
 
+
+
 	@POST
 	@Produces(MEDIA_TYPE_JSON)
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public String signIn(
-			@FormDataParam("user_ID") long userID,
-			@FormDataParam("token") String token,
-			@FormDataParam("phone") String phone
+			@FormDataParam(USER_ID) long userID,
+			@FormDataParam(TOKEN) String token,
+			@FormDataParam(PHONE) String phone
 			) throws SQLWorkException {
+
+		checkParameter(PHONE, log);
+		checkParameter(TOKEN, log);
+		checkParameter(USER_ID, log);
+
 		boolean verify = false;
 		try {
 			verify = TwitterVerification.verify(token, userID);
 		}
 		catch (StringIndexOutOfBoundsException e) {
-			log.info("can't parse token.");
+			log.warn("can't parse token.");
+			throw new RequestException("can't parse token: \"" + token + "\"");
 		}
 
 		if (verify == false)
