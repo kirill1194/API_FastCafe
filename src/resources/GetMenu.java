@@ -38,7 +38,7 @@ public class GetMenu extends BaseResource{
 
 	@GET
 	@Produces(MEDIA_TYPE_JSON)
-	public String getMenu() throws SQLWorkException {
+	public ArrayList<MenuItem> getMenu() throws SQLWorkException {
 
 		requestLog(log);
 
@@ -46,7 +46,7 @@ public class GetMenu extends BaseResource{
 
 		LOG.responseLog(log, "menu is very large, so I will not write it to a log. Menu Count: " + objectResponse.size() + '\n');
 
-		return arrayListToJsonArrayString(objectResponse);
+		return objectResponse;
 	}
 
 

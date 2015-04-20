@@ -20,13 +20,13 @@ public class GetCategories extends BaseResource {
 
 	@GET
 	@Produces(MEDIA_TYPE_JSON)
-	public String getCategories() {
+	public ArrayList<CategoryItem> getCategories() {
 		requestLog(log);
 
 		ArrayList<CategoryItem> objectResponse = SqlFunctions.getCategories();
 
 		LOG.responseLog(log, objectResponse);
-		return arrayListToJsonArrayString(objectResponse);
+		return objectResponse;
 	}
 
 }
