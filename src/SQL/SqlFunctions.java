@@ -17,6 +17,7 @@ import Functions.Functions;
 import Functions.SMS;
 import Items.CategoryItem;
 import Items.MenuItem;
+import Items.ProfileItem;
 import Services.Consts;
 
 public class SqlFunctions {
@@ -28,6 +29,7 @@ public class SqlFunctions {
 	 * @param phone
 	 * @return
 	 */
+	@Deprecated
 	public static boolean isFreePhomeNumber(String phone) throws SQLWorkException {
 		Connection connection = null;
 		try {
@@ -58,6 +60,7 @@ public class SqlFunctions {
 	 * @return true - если удалось создать.
 	 * @return false - если произошла ошибка
 	 */
+	@Deprecated
 	public static boolean createNewUser(String phone, String pass, String name) throws SQLWorkException {
 		Connection connection = null;
 		try {
@@ -94,6 +97,7 @@ public class SqlFunctions {
 	 * @return Access Token
 	 * @return NULL - если аутентификация не прошла
 	 */
+	@Deprecated
 	public static String login(String phone, String pass) throws SQLWorkException{
 		Connection connection = null;
 		String newAccessToken = Functions.getAccessTokent(1234, pass);
@@ -131,6 +135,7 @@ public class SqlFunctions {
 	 * @return - -1, если access token просрочен или его нет в базе
 	 * @throws SQLWorkException: errorCode 401 - неверный Access Token - надо перелогиниться
 	 */
+	@Deprecated
 	public static long lifeTimeAccessToken(String accessToken) throws SQLWorkException{
 		Connection connection = null;
 		try {
@@ -170,29 +175,6 @@ public class SqlFunctions {
 	 * @return
 	 * @throws SQLWorkException
 	 */
-	public static ArrayList<MenuItem> getMenuOld() throws SQLWorkException{
-		Connection connection = SqlServices.getConnection();
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement("select * from menu");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			ArrayList<MenuItem> result = new ArrayList<MenuItem>();
-			while(resultSet.next()) {
-				MenuItem temp = new MenuItem(resultSet.getString("ID"), resultSet.getString("name"),
-						resultSet.getString("category"), resultSet.getString("img"),
-						resultSet.getString("description"), resultSet.getDouble("price")
-						);
-				result.add(temp);
-			}
-			return result;
-		} catch (SQLException e) {
-			throw new SQLWorkException(e);
-		} finally {
-			SqlServices.closeConnection(connection);
-		}
-
-	}
-
-
 	public static ArrayList<MenuItem> getMenu() throws SQLWorkException{
 		Connection connection = SqlServices.getConnection();
 		try {
@@ -256,6 +238,7 @@ public class SqlFunctions {
 	 * @param accessToken
 	 * @return int - версия меню
 	 */
+	@Deprecated
 	public static int getMenuVersion() throws SQLWorkException{
 		Connection connection = SqlServices.getConnection();
 		try {
@@ -363,6 +346,7 @@ public class SqlFunctions {
 	 * @return
 	 * @throws SQLWorkException: errorCode 401 - неверный Access Token - надо перелогиниться
 	 */
+	@Deprecated
 	public static boolean setName(String accessToken, String name) throws SQLWorkException {
 		Connection connection = null;
 		try {
@@ -391,6 +375,7 @@ public class SqlFunctions {
 	 * @return
 	 * @throws SQLWorkException: errorCode 401 - неверный Access Token - надо перелогиниться
 	 */
+	@Deprecated
 	public static boolean changePass(String oldPass, String newPass, String accessToken) throws SQLWorkException {
 		Connection connection = null;
 		try {
@@ -417,6 +402,7 @@ public class SqlFunctions {
 	 * @return
 	 * @throws SQLWorkException
 	 */
+	@Deprecated
 	public static boolean resetPass(String phone) throws SQLWorkException {
 		Connection connection = null;
 		try {
@@ -537,6 +523,29 @@ public class SqlFunctions {
 			SqlServices.closeConnection(connection);
 		}
 
+	}
+
+
+	public static ProfileItem getProfile(String access_token) throws SQLWorkException {
+		Connection connection = SqlServices.getConnection();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"select `name`, `phone`, `sale` from `users` where `access_token`=?"
+					);
+			preparedStatement.setString(1, access_token);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			ProfileItem profile = null;
+			if (resultSet.next()) {
+				profile = new ProfileItem(resultSet.getString("name"), resultSet.getString("phone"), resultSet.getDouble("sale"));
+				if (resultSet.next())
+					throw new SQLWorkException(500, "дублирующаяся запись в базе");
+			}
+			return profile;
+		} catch (SQLException e) {
+			throw new SQLWorkException(e);
+		} finally {
+			SqlServices.closeConnection(connection);
+		}
 	}
 }
 

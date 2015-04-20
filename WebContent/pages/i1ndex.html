@@ -21,64 +21,27 @@
 <p/>
 
 <fieldset>
-<legend>Unused API</legend>
-<ul>
-	<li><a href=changePass>changePass</a>  
-		<br/>@parameters: "old_pass", "new_pass", "access_token"
-		<br/>@return: "successfully" - true/false
-	</li>
-	<li><a href=registration>registration</a>
-		<br/>@parameters: "phone", "pass"
-		<br/>@return: "response" - true/false
-	</li>
-	<li><a href=getMenuVersion>getMenuVersion</a>
-		<br/>@parameter:
-		<br/>@return "response" - версия меню
-	</li>
-	<li><a href=isFreePhoneNumber>isFreePhoneNumber</a>
-		<br/>@parameters: "phone"
-		<br/>@return: "response" - true/false
-	</li>
-	<li><a href=lifeTimeAccessToken>lifeTimeAccessToken</a>
-		<br/>@parameters: "access_token"
-		<br/>@return: "response" - время жизни токена(long)
-		<br/>если логин access_token сдох или отсутствует в базе, то ответ "-1"
-	</li>
-	<li><a href=login>login</a>
-		<br/>@parameters: "pnome", "pass"
-		<br/>@return: "access_token" - Access Token
-		<br/>@return: "successfuly" - true/false
-	</li>
-	<li><a href=resetPass>resetPass</a>
-		<br/>@parameters: "phone"
-		<br/>@return: "successfuly" - true/false
-	</li>
-	<li><a href=setName>setName</a>
-		<br/>@parameters: "name", "access_token"
-		<br/>@return: "response" - true/false
-	</li>
-</ul>
-</fieldset>
-<br/>
+
 <fieldset>
 <legend>API methods</legend>
 <ul>
-	<li><a href=getMenu/1>getMenu</a>
+	<li><a href=getMenu/>getMenu</a>
 		<br/>@parameters:
 		<br/>@return: "response" - JSONArray <a href=pages/MenuItem.html>MenuItem</a>
 	</li>
-	<li><a href=getMenuByCategory/>getMenuByCategory</a>
-		<br/>@parameters: "category"
-		<ul>
-			<li>category(int) - id категории
-		</ul>
+	
+	<li><a href=getMenu/1>getMenu/{category_ID}</a>
+		<br/>@parameters:
 		<br/>@return: "response" - JSONArray <a href=pages/MenuItem.html>MenuItem</a>
 	</li>
+
 	<li><a href=getProfile/>getProfile</a>
 		<br/>@parameters: "access_token"
 		<br/>@return: JSONObject <a href=pages/ProfileItem.html>ProfileItem</a>
 	</li>
 	<li><a href=signIn/>signIn</a>
+		<br/>@METHOD: POST
+		<br/>@ContentType: multipart/form-data
 		<br/>@parameters: "user_ID", "token", "phone"
 		<br/><ul>
 			<li>user_ID (long) - id выданный Twitter Digits</li>
@@ -93,6 +56,7 @@
 		<br/>@return: "access_token" : "access token для доступа"  
 	</li>
 	<li><a href=getCategories/>getCategories</a>
+		<br/>@METHOD: GET
 		<br/>@parameters: 
 		<br/>@result: JSONArray of <a href=pages/CategoryItem.html>CategoryItem</a>
 	</li>

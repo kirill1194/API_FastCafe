@@ -1,9 +1,11 @@
 package Items;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import twitter4j.JSONException;
 import twitter4j.JSONObject;
 
-
+@XmlRootElement
 public class CategoryItem {
 	public int id;
 	public String name;

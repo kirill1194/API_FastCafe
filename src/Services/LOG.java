@@ -17,6 +17,7 @@ public class LOG {
 	.create();
 
 	private static String getParameters(HttpServletRequest request) {
+
 		StringBuilder result = new StringBuilder();
 		Map<String, String[]> parameters = request.getParameterMap();
 		for (String name : parameters.keySet()) {
@@ -27,6 +28,7 @@ public class LOG {
 		}
 		return result.toString();
 	}
+
 
 	public static String notExistPar(String par) {
 		return "don't exist parameter \"" + par + "\"";
