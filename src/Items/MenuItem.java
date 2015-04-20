@@ -1,6 +1,6 @@
 package Items;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -10,11 +10,11 @@ public class MenuItem {
 
 	public String article;
 	public String name;
-	public String category;
+	public int category;
 	public String img;
 	public String description;
-	public ArrayList<PriceItem> prices;
-	public ArrayList<ToppingItem> toppings;
+	public LinkedList<PriceItem> prices;
+	public LinkedList<ToppingItem> toppings;
 
 	//
 	//	private static final String ARTICLE = "article";
@@ -59,24 +59,24 @@ public class MenuItem {
 
 	public MenuItem() {}
 
-	public MenuItem(String _article, String _name, String _category, String _img, String _description) {
+	public MenuItem(String _article, String _name, int _category, String _img, String _description) {
 		article = _article;
 		name = _name;
 		category = _category;
 		img = _img;
 		description = _description;
-		prices = new ArrayList<PriceItem>();
-		toppings = new ArrayList<ToppingItem>();
+		prices = new LinkedList<PriceItem>();
+		toppings = new LinkedList<ToppingItem>();
 	}
 
 	@Deprecated
-	public MenuItem(String _article, String _name, String _category, String _img, String _description, double _price) {
+	public MenuItem(String _article, String _name, int _category, String _img, String _description, double _price) {
 		article = _article;
 		name = _name;
 		category = _category;
 		img = _img;
 		description = _description;
-		prices = new ArrayList<PriceItem>();
+		prices = new LinkedList<PriceItem>();
 	}
 
 	public void addPrice(int size, double price) {

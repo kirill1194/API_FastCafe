@@ -1,6 +1,6 @@
 package resources;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,10 +21,10 @@ public class GetMenuByCategory extends BaseResource {
 
 	@GET
 	@Consumes(MEDIA_TYPE_JSON)
-	public ArrayList<MenuItem> getMenuByCategory(@QueryParam(CATEGORY) int category) {
+	public LinkedList<MenuItem> getMenuByCategory(@QueryParam(CATEGORY) int category) {
 		requestLog(log);
 
-		ArrayList<MenuItem> objectResponse = SqlFunctions.getMenuByCategory(category);
+		LinkedList<MenuItem> objectResponse = SqlFunctions.getMenuByCategory(category);
 
 		LOG.responseLog(log, "menu is very large, so I will not write it to a log. Menu Count: " + objectResponse.size() + '\n');
 

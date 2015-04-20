@@ -1,6 +1,7 @@
 package resources;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,8 +13,8 @@ import org.apache.logging.log4j.Logger;
 
 import Exceptions.SQLWorkException;
 import Items.MenuItem;
-import SQL.SqlFunctions;
 import Services.LOG;
+import cache.control.CacheMenu;
 
 @Path("/getMenu/")
 public class GetMenu extends BaseResource{
@@ -24,12 +25,12 @@ public class GetMenu extends BaseResource{
 	@GET
 	@Path("{par}")
 	@Produces(MEDIA_TYPE_JSON)
-	public ArrayList<MenuItem> getMenuByCategory(@PathParam("par") String category) {
+	public LinkedList<MenuItem> getMenuByCategory(@PathParam("par") String category) {
 
 		requestLog(log);
 
 		int categoryInt = Integer.parseInt(category);
-		ArrayList<MenuItem> objectResponse = SqlFunctions.getMenuByCategory(categoryInt);
+		LinkedList<MenuItem> objectResponse = CacheMenu.getMenuByCategory(categoryInt);
 
 		LOG.responseLog(log, "menu is very large, so I will not write it to a log. Menu Count: " + objectResponse.size() + '\n');
 		return objectResponse;
@@ -42,7 +43,7 @@ public class GetMenu extends BaseResource{
 
 		requestLog(log);
 
-		ArrayList<MenuItem> objectResponse = SqlFunctions.getMenu();
+		ArrayList<MenuItem> objectResponse = CacheMenu.getMenu();
 
 		LOG.responseLog(log, "menu is very large, so I will not write it to a log. Menu Count: " + objectResponse.size() + '\n');
 

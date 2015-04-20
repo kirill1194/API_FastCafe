@@ -5,6 +5,6 @@
     <Resource name="jdbc/testdb" auth="Container"
         type="javax.sql.DataSource" username="root" password="milan2587871"
         driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://212.119.243.243:3306/fastCafe?useUnicode=true&amp;characterEncoding=UTF-8"
+        url="jdbc:mysql://127.0.0.1:3306/fastCafe?useUnicode=true&amp;characterEncoding=UTF-8"
         maxActive="10" maxIdle="4" />
 </Context>

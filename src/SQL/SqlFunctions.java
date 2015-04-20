@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -193,7 +194,7 @@ public class SqlFunctions {
 					MenuItem temp = new MenuItem(
 							ID.toString(),
 							resultSet.getString("name"),
-							resultSet.getString("category"),
+							resultSet.getInt("category"),
 							resultSet.getString("img"),
 							resultSet.getString("description")
 							);
@@ -209,13 +210,13 @@ public class SqlFunctions {
 							"WHERE topping_relationship.topping_id = toppings.id"
 					);
 			resultSet = preparedStatement.executeQuery();
+
 			while (resultSet.next()) {
 				Integer menuId = resultSet.getInt("menu_id");
 				int toppingId = resultSet.getInt("topping_id");
 				String name = resultSet.getString("name");
 				double price = resultSet.getDouble("price");
 				menu.get(menuId).addTopping(toppingId, name, price);
-
 			}
 
 
@@ -264,6 +265,7 @@ public class SqlFunctions {
 	 * @param accessToken
 	 * @return
 	 */
+	@Deprecated
 	public static ArrayList<MenuItem> getMenuByCategoryOld(String category) throws SQLWorkException{
 
 		Connection connection = SqlServices.getConnection();
@@ -278,7 +280,7 @@ public class SqlFunctions {
 				MenuItem temp = new MenuItem(
 						resultSet.getString("ID"),
 						resultSet.getString("name"),
-						resultSet.getString("category"),
+						resultSet.getInt("category"),
 						resultSet.getString("img"),
 						resultSet.getString("description"),
 						resultSet.getDouble("price")
@@ -295,7 +297,7 @@ public class SqlFunctions {
 	}
 
 
-	public static ArrayList<MenuItem> getMenuByCategory(int category) throws SQLWorkException{
+	public static LinkedList<MenuItem> getMenuByCategory(int category) throws SQLWorkException{
 		Connection connection = SqlServices.getConnection();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
@@ -314,7 +316,7 @@ public class SqlFunctions {
 					MenuItem temp = new MenuItem(
 							ID.toString(),
 							resultSet.getString("name"),
-							resultSet.getString("category"),
+							resultSet.getInt("category"),
 							resultSet.getString("img"),
 							resultSet.getString("description")
 							);
@@ -323,9 +325,26 @@ public class SqlFunctions {
 				}
 			}
 
+			//добавление к каждому элементу меню топпингов
+			preparedStatement = connection.prepareStatement(
+					"select topping_relationship.menu_id, topping_relationship.topping_id, toppings.name, toppings.price " +
+							"FROM topping_relationship INNER JOIN toppings " +
+							"WHERE topping_relationship.topping_id = toppings.id"
+					);
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Integer menuId = resultSet.getInt("menu_id");
+				int toppingId = resultSet.getInt("topping_id");
+				String name = resultSet.getString("name");
+				double price = resultSet.getDouble("price");
+				if (menu.containsKey(menuId))
+					menu.get(menuId).addTopping(toppingId, name, price);
+			}
+
 			//кастиим Map to ArrayList
 			//map -> values collection -> MunuItem[] -> List -> ArrayList
-			ArrayList<MenuItem> result = new ArrayList<MenuItem>(Arrays.asList(menu.values().toArray(new MenuItem[menu.size()])));
+			LinkedList<MenuItem> result = new LinkedList<MenuItem>(Arrays.asList(menu.values().toArray(new MenuItem[menu.size()])));
 
 			return result;
 		} catch (SQLException e) {

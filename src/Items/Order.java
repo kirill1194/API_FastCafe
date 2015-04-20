@@ -13,8 +13,9 @@ public class Order {
 	public double sale;
 	public Date creationTime;
 	public Date finishTime;
-	public LinkedList<OdreItem> items;
+	public LinkedList<OdrerItem> items;
 
+	public Order(){}
 
 
 }
