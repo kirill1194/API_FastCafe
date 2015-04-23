@@ -7,26 +7,23 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import Exceptions.SQLWorkException;
 import Items.MenuItem;
 import SQL.SqlFunctions;
-import Services.LOG;
 
 @Path("/getMenuByCategory/")
 public class GetMenuByCategory extends BaseResource {
 
-	private static Logger log = LogManager.getLogger(GetMenuByCategory.class);
+	//	private static Logger log = LogManager.getLogger(GetMenuByCategory.class);
 
 	@GET
 	@Consumes(MEDIA_TYPE_JSON)
-	public LinkedList<MenuItem> getMenuByCategory(@QueryParam(CATEGORY) int category) {
-		requestLog(log);
+	public LinkedList<MenuItem> getMenuByCategory(@QueryParam(CATEGORY) int category) throws SQLWorkException {
+		//		requestLog(log);
 
 		LinkedList<MenuItem> objectResponse = SqlFunctions.getMenuByCategory(category);
 
-		LOG.responseLog(log, "menu is very large, so I will not write it to a log. Menu Count: " + objectResponse.size() + '\n');
+		//		LOG.responseLog(log, "menu is very large, so I will not write it to a log. Menu Count: " + objectResponse.size() + '\n');
 
 		return objectResponse;
 	}

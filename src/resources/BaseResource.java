@@ -28,11 +28,6 @@ public class BaseResource {
 	public static final String PHONE = "phone";
 	public final static String CATEGORY = "category";
 
-	public void requestLog(Logger log) {
-		LOG.requestLog(log, request);
-	}
-
-
 	private String getParameter(String parameter) throws RequestException{
 		String result = request.getParameter(parameter);
 		if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data")) {

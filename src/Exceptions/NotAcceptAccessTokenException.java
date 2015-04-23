@@ -1,13 +1,28 @@
 package Exceptions;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import org.apache.logging.log4j.Logger;
 
-public class NotAcceptAccessTokenException extends WebApplicationException {
-	public NotAcceptAccessTokenException() {
-		super(Response.status(404).entity("not accept access_token").
-				type(MediaType.TEXT_PLAIN).build());
+public class NotAcceptAccessTokenException extends BaseException {
+	private static final long serialVersionUID = 5278284424122850133L;
+
+	private String accessToken;
+	public NotAcceptAccessTokenException(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	@Override
+	public String getMessage() {
+		return "bad access token: " + accessToken;
+	}
+
+	@Override
+	public int getStatus() {
+		return 401;
+	}
+
+	@Override
+	public void writeToLog(Logger log) {
+		log.error("status: " + getStatus() + "; " + "bad access token: " + accessToken + '\n');
 	}
 
 }

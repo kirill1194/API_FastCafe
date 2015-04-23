@@ -7,32 +7,56 @@ import java.util.LinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import Exceptions.SQLWorkException;
 import Items.MenuItem;
+import Items.OrderItem;
+import Items.PriceItem;
+import Items.ToppingItem;
 import SQL.SqlFunctions;
 
 public class CacheMenu {
 	private static final Logger log = LogManager.getLogger(CacheMenu.class);
 
+	private static HashMap<String, MenuItem> menuByArticle = null;
 	private static ArrayList<MenuItem> menu = null;
 	private static HashMap<Integer, LinkedList<MenuItem>> menuByCategory = null;
 
-	public static ArrayList<MenuItem> getMenu() {
+	public static void update() throws SQLWorkException {
+		menu = SqlFunctions.getMenu();
+		log.info("Cache menuByCategory is updated");
+
+		menuByArticle = new HashMap<String, MenuItem>();
+		for (MenuItem item : menu) {
+			menuByArticle.put(item.article, item);
+		}
+		updateCategorys();
+	}
+
+	static {
+		try {
+			update();
+		} catch (SQLWorkException e) {
+			log.fatal("can't initialize menu in cach");
+		}
+	}
+
+	public static ArrayList<MenuItem> getMenu() throws SQLWorkException {
 		if (menu != null) {
-			log.info("Меню загружено из кеша");
+			//log.info("Меню загружено из кеша");
 		} else {
 			update();
-			log.info("Меню загружена из БД");
+			//log.info("Меню загружена из БД");
 		}
 		return menu;
 	}
 
-	public static LinkedList<MenuItem> getMenuByCategory(int category) {
+	public static LinkedList<MenuItem> getMenuByCategory(int category) throws SQLWorkException {
 		if (menuByCategory == null) {
 			menu = SqlFunctions.getMenu();
 			updateCategorys();
 		}
 		if (menuByCategory.containsKey(category)) {
-			log.info("Меню по категории " + category + " возвращено из кеша");
+			//log.info("Меню по категории " + category + " возвращено из кеша");
 			return menuByCategory.get(category);
 		} else {
 			return new LinkedList<MenuItem>();
@@ -51,12 +75,39 @@ public class CacheMenu {
 				menuByCategory.put(menuItem.category, tempArr);
 			}
 		}
-		log.info("Загружен новый кеш меню по категориям");
+		log.info("Cache menu is updated");
 	}
 
-	public static void update() {
-		log.info("Загружен новый кеш меню");
-		menu = SqlFunctions.getMenu();
-		updateCategorys();
+
+
+	public static double getCost(OrderItem[] orders) throws SQLWorkException {
+		if (menuByArticle == null)
+			update();
+		double cost = 0.0;
+		for (OrderItem orderItem : orders) {
+			double orderItemCost = 0.0;
+			String article = String.valueOf(orderItem.article);
+			MenuItem menuItem = menuByArticle.get(article);
+
+			//подсчет стоимости товара
+			for (PriceItem priceItem : menuItem.prices) {
+				if (priceItem.size == orderItem.size) {
+					orderItemCost +=priceItem.price;
+					break;
+				}
+			}
+
+			//подсчет стоимости топпингов
+			for (int toppingId : orderItem.toppingsIds) {
+				for (ToppingItem toppingItem : menuItem.toppings) {
+					if (toppingItem.ID == toppingId)
+						orderItemCost += toppingItem.price;
+				}
+			}
+
+			orderItemCost *= orderItem.count;
+			cost += orderItemCost;
+		}
+		return cost;
 	}
 }

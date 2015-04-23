@@ -4,7 +4,7 @@
   	<RollingFile name="RollingFile" fileName="/home/kirill/logs/fastCafe_logs/log"
             filePattern="/home/kirill/logs/fastCafe_logs/log-%d{MM-dd-yyyy}-%i.log">
             <PatternLayout>
-                <Pattern>%d{DEFAULT} %p %c(%L) %m%n</Pattern>
+                <Pattern>%d{DEFAULT} %p %c(%L) %m%n%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
@@ -13,7 +13,7 @@
             <DefaultRolloverStrategy max="2000"/>
         </RollingFile>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{DEFAULT} %p %c(%L) %m%n"/>
+      <PatternLayout pattern="%d{DEFAULT} %p %c(%L) %m%n%n"/>
     </Console>
   </Appenders>
   <Loggers>

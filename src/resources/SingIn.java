@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import Exceptions.NotContainsParameterException;
 import Exceptions.RequestException;
 import Exceptions.SQLWorkException;
 import SQL.SqlFunctions;
@@ -39,7 +40,7 @@ public class SingIn extends BaseResource {
 			@FormParam(USER_ID) String userID,
 			@FormParam(TOKEN) String token,
 			@FormParam(PHONE) String phone
-			) throws SQLWorkException {
+			) throws SQLWorkException, NotContainsParameterException {
 		return signInBase(userID, token, phone);
 	}
 
@@ -56,7 +57,7 @@ public class SingIn extends BaseResource {
 	//	}
 
 
-	public String signInBase(String userIDString, String token, String phone) {
+	public String signInBase(String userIDString, String token, String phone) throws NotContainsParameterException, SQLWorkException {
 
 		log.info(request.getRequestURI() + " new request:\n" +
 				'\t' + USER_ID + " : " + userIDString + '\n' +

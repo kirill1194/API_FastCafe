@@ -2,11 +2,9 @@ package Exceptions;
 
 import java.sql.SQLException;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import org.apache.logging.log4j.Logger;
 
-public class SQLWorkException extends WebApplicationException {
+public class SQLWorkException extends BaseException {
 	/**
 	 *
 	 */
@@ -16,16 +14,12 @@ public class SQLWorkException extends WebApplicationException {
 	private String errorMessage = "";
 
 	public SQLWorkException(SQLException e) {
-		super(Response.status(500).entity("error code: " + e.getErrorCode() + "; " + e.getMessage()).
-				type(MediaType.TEXT_PLAIN).build());
 		sqlErrorCode = e.getErrorCode();
 		errorMessage = "error code: " + sqlErrorCode + "; " + e.getMessage();
 
 	}
 
 	public SQLWorkException(int _errorCode) {
-		super(Response.status(500).entity("error code: " + _errorCode + ";").
-				type(MediaType.TEXT_PLAIN).build());
 		sqlErrorCode = _errorCode;
 	}
 	@Override
@@ -34,13 +28,23 @@ public class SQLWorkException extends WebApplicationException {
 	}
 
 	public SQLWorkException(int _errorCode, String message) {
-		super(Response.status(500).entity("error code: " + _errorCode + "; " + message).
-				type(MediaType.TEXT_PLAIN).build());
+
 		sqlErrorCode = _errorCode;
 		errorMessage = message;
 	}
 
 	public int getErrorCode() {
 		return sqlErrorCode;
+	}
+
+	@Override
+	public int getStatus() {
+		return 500;
+	}
+
+	@Override
+	public void writeToLog(Logger log) {
+		log.error("SqlException: " + getMessage() + '\n');
+
 	}
 }
