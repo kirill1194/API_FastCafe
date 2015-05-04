@@ -10,6 +10,17 @@
     <servlet-name>Jersey REST Service</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     <init-param>
+		<param-name>com.sun.jersey.core.provider.jaxb</param-name>
+		<param-value>
+			resources, providers
+		</param-value>
+	</init-param>
+	<init-param>
+		<param-name>jersey.config.server.provider.scanning.recursive</param-name>
+		<param-value>false</param-value>
+	</init-param>
+    
+    <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
       <param-value>resources, providers</param-value>
     </init-param>

@@ -16,45 +16,6 @@ public class MenuItem {
 	public LinkedList<PriceItem> prices;
 	public LinkedList<ToppingItem> toppings;
 
-	//
-	//	private static final String ARTICLE = "article";
-	//	private static final String CATEGORY = "category";
-	//	private static final String NAME = "name";
-	//	private static final String IMG = "img";
-	//	private static final String DESCRIPTION = "description";
-	//	private static final String PRICE = "price";
-	//	private static final String SIZE = "size";
-	//	private static final String TOPPINGS = "toppings";
-	//	private static final String ID = "ID";
-
-
-	//	public MenuItem(JSONObject json) throws JSONException {
-	//		article = json.getString(ARTICLE);
-	//		category = json.getString(CATEGORY);
-	//		name = json.getString(NAME);
-	//		img =json.getString(IMG);
-	//		description = json.getString(DESCRIPTION);
-	//
-	//		prices = new ArrayList<MenuItem.PriceItem>();
-	//		JSONArray jsonPrices = json.getJSONArray(PRICE);
-	//		for (int i=0; i<jsonPrices.length(); i++) {
-	//			PriceItem priceItem = new PriceItem();
-	//			priceItem.size = jsonPrices.getJSONObject(i).getInt(SIZE);
-	//			priceItem.price = jsonPrices.getJSONObject(i).getDouble(PRICE);
-	//			prices.add(priceItem);
-	//		}
-	//
-	//		toppings = new ArrayList<ToppingItem>();
-	//		JSONArray jsonToppings = json.getJSONArray(TOPPINGS);
-	//		for (int i=0; i<jsonToppings.length(); i++) {
-	//			ToppingItem toppingItem = new ToppingItem();
-	//			toppingItem.ID = jsonToppings.getJSONObject(i).getInt(ID);
-	//			toppingItem.name = jsonToppings.getJSONObject(i).getString(NAME);
-	//			toppingItem.price = jsonToppings.getJSONObject(i).getDouble(PRICE);
-	//			toppings.add(toppingItem);
-	//
-	//		}
-	//	}
 
 
 	public MenuItem() {}

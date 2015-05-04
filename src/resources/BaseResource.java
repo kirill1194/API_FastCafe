@@ -22,11 +22,12 @@ public class BaseResource {
 
 	@Context public HttpServletRequest request;
 
-	public static final String ACCESS_TOKEN = "access_token";
+	public static final String ACCESS_TOKEN = "token";
 	public static final String USER_ID = "user_ID";
 	public static final String TOKEN = "token";
 	public static final String PHONE = "phone";
 	public final static String CATEGORY = "category";
+
 
 	private String getParameter(String parameter) throws RequestException{
 		String result = request.getParameter(parameter);

@@ -2,8 +2,6 @@ package Exceptions;
 
 import org.apache.logging.log4j.Logger;
 
-import Items.MenuItem;
-
 import com.google.gson.Gson;
 
 public class IncorrectOrderException extends BaseException {
@@ -14,9 +12,13 @@ public class IncorrectOrderException extends BaseException {
 
 	private static final Gson gson = new Gson();
 	private static final int status = 400;
-	public IncorrectOrderException(String message, MenuItem menuItem) {
-		this.message = message + " in object: \n\t " + gson.toJson(menuItem);
+	public IncorrectOrderException(String message, Object obj) {
+		this.message = message + " in object: \n\t " + gson.toJson(obj);
 
+	}
+
+	public IncorrectOrderException(String message) {
+		this.message = message;
 	}
 
 	@Override

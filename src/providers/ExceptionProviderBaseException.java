@@ -16,10 +16,13 @@ public class ExceptionProviderBaseException implements ExceptionMapper<BaseExcep
 
 	@Override
 	public Response toResponse(BaseException ex) {
-		log.error("EXCEPTION. ("+ex.getClass().getName() + '\n' +
+		String errorMessage = "EXCEPTION. ("+ex.getClass().getName() + '\n' +
 				"\t message: " + ex.getMessage() + '\n' +
-				"\t IN: " + ex.getStackTrace()[0].toString());
-		ex.writeToLog(log);
+				"\t IN: " + ex.getStackTrace()[0].toString();
+		//		for (int i=0; i<5 && i<ex.getStackTrace().length; i++)
+		//			errorMessage += ex.getStackTrace()[i].toString() + '\n';
+		log.error(errorMessage);
+		//ex.writeToLog(log);
 		return Response.status(ex.getStatus()).
 				entity(ex.getMessage()).
 				type(ex.getType()).

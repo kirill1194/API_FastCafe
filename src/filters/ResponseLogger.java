@@ -20,26 +20,30 @@ public class ResponseLogger implements ContainerResponseFilter {
 	@Override
 	public ContainerResponse filter(ContainerRequest request,
 			ContainerResponse response) {
-		StringBuilder builder = new StringBuilder("response: " + '\n');
+		try {
+			StringBuilder builder = new StringBuilder("response: " + '\n');
+			builder.append(PREFIX + request.getAbsolutePath().toString() + " " + request.getMethod() + '\n');
+			//status
+			builder.append(PREFIX + "HTTP status: " + response.getStatus() + '\n');
+			//Content-Type
+			builder.append(PREFIX + "Content=type: " + response.getMediaType() + '\n');
+			//entity
+			Object objEntity = response.getEntity();
+			if (objEntity instanceof Collection<?>) {
+				Collection<?> col = (Collection<?>) objEntity;
+				builder.append(PREFIX + "response: " + response.getEntityType().toString() + "; size: " + col.size());
+			} else {
+				String entity = gson.toJson(response.getEntity());
+				builder.append(PREFIX + "response: " + entity);
+			}
 
-		//status
-		builder.append(PREFIX + "HTTP status: " + response.getStatus() + '\n');
-		//Content-Type
-		builder.append(PREFIX + "Content=type: " + response.getMediaType() + '\n');
-		//entity
-		Object objEntity = response.getEntity();
-		if (objEntity instanceof Collection<?>) {
-			Collection<?> col = (Collection<?>) objEntity;
-			builder.append(PREFIX + "response: " + response.getEntityType().toString() + "; size: " + col.size());
-		} else {
-			String entity = gson.toJson(response.getEntity());
-			builder.append(PREFIX + "response: " + entity);
+			if (builder.charAt(builder.length()-1) == '\n')
+				builder.deleteCharAt(builder.length()-1);
+
+			log.info(builder.toString());
+		} catch (Throwable ex) {
+			log.error("Exception in ResponseLog", ex);
 		}
-
-		if (builder.charAt(builder.length()-1) == '\n')
-			builder.deleteCharAt(builder.length()-1);
-
-		log.info(builder.toString());
 		return response;
 	}
 

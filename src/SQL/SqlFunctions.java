@@ -13,12 +13,15 @@ import java.util.LinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import Exceptions.MakeOrderException;
+import Exceptions.NotAcceptAccessTokenException;
 import Exceptions.SQLWorkException;
 import Functions.Functions;
 import Functions.SMS;
 import Items.CategoryItem;
 import Items.MenuItem;
 import Items.ProfileItem;
+import Items.SqlOrder;
 import Services.Consts;
 
 public class SqlFunctions {
@@ -233,7 +236,6 @@ public class SqlFunctions {
 
 	}
 
-
 	/**
 	 * Получение версии меню
 	 * @param accessToken
@@ -354,9 +356,6 @@ public class SqlFunctions {
 		}
 
 	}
-
-
-
 
 	/**
 	 * Изменение имени пользователя
@@ -545,7 +544,7 @@ public class SqlFunctions {
 	}
 
 
-	public static ProfileItem getProfile(String access_token) throws SQLWorkException {
+	public static ProfileItem getProfile(String access_token) throws SQLWorkException, NotAcceptAccessTokenException {
 		Connection connection = SqlServices.getConnection();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
@@ -558,6 +557,8 @@ public class SqlFunctions {
 				profile = new ProfileItem(resultSet.getString("name"), resultSet.getString("phone"), resultSet.getDouble("sale"));
 				if (resultSet.next())
 					throw new SQLWorkException(500, "дублирующаяся запись в базе");
+			} else {
+				throw new NotAcceptAccessTokenException(access_token);
 			}
 			return profile;
 		} catch (SQLException e) {
@@ -565,6 +566,46 @@ public class SqlFunctions {
 		} finally {
 			SqlServices.closeConnection(connection);
 		}
+	}
+
+	/**
+	 * Получение ID юзера по access_token
+	 * @param accessToken
+	 * @return
+	 * @throws NotAcceptAccessTokenException - если нет такого access_token в бд
+	 * @throws SQLWorkException
+	 */
+	public static long getUserId(String accessToken) throws NotAcceptAccessTokenException, SQLWorkException {
+		Connection connection = SqlServices.getConnection();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"select `userID` from `users` where access_token=?"
+					);
+			preparedStatement.setString(1, accessToken);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				long userID = resultSet.getLong("userID");
+				if (resultSet.next())
+					log.fatal("2 equals accessToken in db. accessToken: " + accessToken);
+				return userID;
+			} else {
+				throw new NotAcceptAccessTokenException(accessToken);
+			}
+		} catch (SQLException e) {
+			throw new SQLWorkException(e);
+		}
+	}
+
+	public double getUserSale(String accessToken) throws NotAcceptAccessTokenException, SQLWorkException {
+		return 0.0;
+	}
+
+	public static boolean addOrder() {
+		return true;
+	}
+
+	public static void makeOrder(SqlOrder order) throws MakeOrderException{
+		//to do
 	}
 }
 

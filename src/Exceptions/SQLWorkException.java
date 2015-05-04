@@ -10,13 +10,15 @@ public class SQLWorkException extends BaseException {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private String location = null;
 	private int sqlErrorCode = 0;
 	private String errorMessage = "";
 
 	public SQLWorkException(SQLException e) {
+
 		sqlErrorCode = e.getErrorCode();
 		errorMessage = "error code: " + sqlErrorCode + "; " + e.getMessage();
-
+		location = e.getStackTrace()[0].toString();
 	}
 
 	public SQLWorkException(int _errorCode) {
@@ -46,5 +48,9 @@ public class SQLWorkException extends BaseException {
 	public void writeToLog(Logger log) {
 		log.error("SqlException: " + getMessage() + '\n');
 
+	}
+
+	public String getLocation() {
+		return location;
 	}
 }

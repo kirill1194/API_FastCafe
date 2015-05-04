@@ -22,5 +22,4 @@ public class ExceptionProviderWebApplicationException  implements ExceptionMappe
 		return response;
 
 	}
-
 }

@@ -6,7 +6,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,29 +13,20 @@ import org.apache.logging.log4j.Logger;
 import Exceptions.NotContainsParameterException;
 import Exceptions.RequestException;
 import Exceptions.SQLWorkException;
+import Items.SqignInResponse;
 import SQL.SqlFunctions;
-import Services.LOG;
 import Services.TwitterVerification;
-
-import com.google.gson.JsonObject;
 
 @Path("/signIn/")
 public class SingIn extends BaseResource {
 	private static final Logger log = LogManager.getLogger(SingIn.class);
 
 
-	@POST
-	@Produces(MEDIA_TYPE_JSON)
-	public Response lovilka() {
-		log.error("unsoported Content Type: " + super.request.getContentType());
-		return Response.status(415).build();
-
-	}
 
 	@POST
 	@Produces(MEDIA_TYPE_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String signInFormUrlencoded(
+	public SqignInResponse signInFormUrlencoded(
 			@FormParam(USER_ID) String userID,
 			@FormParam(TOKEN) String token,
 			@FormParam(PHONE) String phone
@@ -57,13 +47,7 @@ public class SingIn extends BaseResource {
 	//	}
 
 
-	public String signInBase(String userIDString, String token, String phone) throws NotContainsParameterException, SQLWorkException {
-
-		log.info(request.getRequestURI() + " new request:\n" +
-				'\t' + USER_ID + " : " + userIDString + '\n' +
-				'\t' + TOKEN + " : " + token + '\n' +
-				'\t' + PHONE + " : " + phone + '\n'
-				);
+	public SqignInResponse signInBase(String userIDString, String token, String phone) throws NotContainsParameterException, SQLWorkException {
 
 		checkParameter(PHONE, phone, log);
 		checkParameter(TOKEN, token, log);
@@ -83,14 +67,13 @@ public class SingIn extends BaseResource {
 		if (verify == false)
 			log.info("Twitter verification don't accepted.");
 
-		JsonObject JSONResponse = new JsonObject();
+		SqignInResponse accessTokenObj = new SqignInResponse();
 		if (verify) {
 			String accessToken = SqlFunctions.signIn(userID, phone);
-			JSONResponse.addProperty("token", accessToken);
+			accessTokenObj.token = accessToken;
 		} else {
-			JSONResponse.addProperty("token", "0");
+			accessTokenObj.token = "0";
 		}
-		LOG.responseLog(log, JSONResponse);
-		return JSONResponse.toString();
+		return accessTokenObj;
 	}
 }

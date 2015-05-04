@@ -4,10 +4,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class OrderItem {
-	public long article;
-	public int[] toppingsIds;
-	public int size;
-	public int count;
+	public Long article;
+	public Integer[] toppingsIds;
+	public Integer size;
+	public Integer count;
+	public String comment;
 
 	public OrderItem(){}
 }

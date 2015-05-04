@@ -8,7 +8,6 @@ public class NotContainsParameterException extends BaseException{
 
 	private String parameterName;
 
-
 	public NotContainsParameterException(String parameterName) {
 		this.parameterName = parameterName;
 	}

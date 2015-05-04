@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import Exceptions.IncorrectOrderException;
 import Exceptions.SQLWorkException;
 import Items.MenuItem;
 import Items.OrderItem;
@@ -78,9 +79,7 @@ public class CacheMenu {
 		log.info("Cache menu is updated");
 	}
 
-
-
-	public static double getCost(OrderItem[] orders) throws SQLWorkException {
+	public static double getCost(ArrayList<OrderItem> orders) throws SQLWorkException, IncorrectOrderException {
 		if (menuByArticle == null)
 			update();
 		double cost = 0.0;
@@ -90,18 +89,32 @@ public class CacheMenu {
 			MenuItem menuItem = menuByArticle.get(article);
 
 			//подсчет стоимости товара
+			boolean foundFlag = false;
 			for (PriceItem priceItem : menuItem.prices) {
 				if (priceItem.size == orderItem.size) {
 					orderItemCost +=priceItem.price;
+					foundFlag = true;
 					break;
 				}
 			}
+			if (foundFlag == false) throw new IncorrectOrderException(
+					"I don't now size \"" + orderItem.size + "\"",
+					orderItem);
+
 
 			//подсчет стоимости топпингов
-			for (int toppingId : orderItem.toppingsIds) {
-				for (ToppingItem toppingItem : menuItem.toppings) {
-					if (toppingItem.ID == toppingId)
-						orderItemCost += toppingItem.price;
+
+			for (int orderToppingId : orderItem.toppingsIds) {
+				foundFlag = false;
+				for (ToppingItem menuToppingItem : menuItem.toppings) {
+					if (menuToppingItem.ID == orderToppingId) {
+						orderItemCost += menuToppingItem.price;
+						foundFlag = true;
+						break;
+					}
+					if (foundFlag == false) throw new IncorrectOrderException(
+							"I don't new topping with id \"" + orderToppingId + "\"",
+							orderItem);
 				}
 			}
 
