@@ -1,8 +1,9 @@
-package Items;
+package Items.http.response;
 
 import java.util.LinkedList;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
 
 @XmlRootElement
 public class MenuItem {

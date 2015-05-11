@@ -15,9 +15,9 @@ import Exceptions.IncorrectOrderException;
 import Exceptions.MakeOrderException;
 import Exceptions.NotAcceptAccessTokenException;
 import Exceptions.SQLWorkException;
-import Items.MakeOrderResponse;
-import Items.Order;
-import Items.SqlOrder;
+import Items.http.request.Order;
+import Items.http.response.MakeOrderResponse;
+import Items.sql.SqlOrder;
 import SQL.SqlFunctions;
 import cache.control.CacheMenu;
 
@@ -38,7 +38,7 @@ public class MakeOrder extends BaseResource{
 		SqlOrder sqlOrder = new SqlOrder();
 		sqlOrder.cost = cost;
 		sqlOrder.finishTime = new Date(order.finishTime);
-		log.info("Conver Date: " + sqlOrder.finishTime.toString());
+		log.info("Convert Date: " + sqlOrder.finishTime.toString());
 		double sale = SqlFunctions.getProfile(order.accessToken).sale;
 		sqlOrder.sale = sale;
 

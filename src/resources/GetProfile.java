@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import Exceptions.NotAcceptAccessTokenException;
 import Exceptions.NotContainsParameterException;
 import Exceptions.SQLWorkException;
-import Items.ProfileItem;
+import Items.http.response.ProfileItem;
 import SQL.SqlFunctions;
 
 @Path("/getProfile/")

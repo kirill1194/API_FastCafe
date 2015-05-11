@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 import Exceptions.NotContainsParameterException;
 import Exceptions.RequestException;
 import Exceptions.SQLWorkException;
-import Items.SqignInResponse;
+import Items.http.response.SqignInResponse;
 import SQL.SqlFunctions;
 import Services.TwitterVerification;
 

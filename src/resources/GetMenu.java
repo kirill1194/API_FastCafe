@@ -1,5 +1,6 @@
 package resources;
 
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -9,7 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import Exceptions.SQLWorkException;
-import Items.MenuItem;
+import Items.http.response.MenuItem;
 import cache.control.CacheMenu;
 
 @Path("/getMenu/")

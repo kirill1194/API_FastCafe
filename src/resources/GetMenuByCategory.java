@@ -8,7 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 import Exceptions.SQLWorkException;
-import Items.MenuItem;
+import Items.http.response.MenuItem;
 import SQL.SqlFunctions;
 
 @Path("/getMenuByCategory/")

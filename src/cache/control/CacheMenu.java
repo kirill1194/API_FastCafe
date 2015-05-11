@@ -9,10 +9,10 @@ import org.apache.logging.log4j.Logger;
 
 import Exceptions.IncorrectOrderException;
 import Exceptions.SQLWorkException;
-import Items.MenuItem;
-import Items.OrderItem;
-import Items.PriceItem;
-import Items.ToppingItem;
+import Items.http.request.OrderItem;
+import Items.http.response.MenuItem;
+import Items.http.response.PriceItem;
+import Items.http.response.ToppingItem;
 import SQL.SqlFunctions;
 
 public class CacheMenu {

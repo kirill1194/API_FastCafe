@@ -18,10 +18,10 @@ import Exceptions.NotAcceptAccessTokenException;
 import Exceptions.SQLWorkException;
 import Functions.Functions;
 import Functions.SMS;
-import Items.CategoryItem;
-import Items.MenuItem;
-import Items.ProfileItem;
-import Items.SqlOrder;
+import Items.http.response.CategoryItem;
+import Items.http.response.MenuItem;
+import Items.http.response.ProfileItem;
+import Items.sql.SqlOrder;
 import Services.Consts;
 
 public class SqlFunctions {
@@ -597,15 +597,56 @@ public class SqlFunctions {
 	}
 
 	public double getUserSale(String accessToken) throws NotAcceptAccessTokenException, SQLWorkException {
-		return 0.0;
+		Connection connection = SqlServices.getConnection();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"select `sale` from `users` where access_token=?"
+					);
+			preparedStatement.setString(1, accessToken);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				if (resultSet.getString("sale") == null)
+					return 0;
+				double sale = resultSet.getDouble("sale");
+				if (resultSet.next())
+					log.fatal("2 equals accessToken in db. accessToken: " + accessToken);
+				return sale;
+			} else {
+				throw new NotAcceptAccessTokenException(accessToken);
+			}
+		} catch (SQLException e) {
+			throw new SQLWorkException(e);
+		} finally {
+			SqlServices.closeConnection(connection);
+		}
 	}
 
 	public static boolean addOrder() {
 		return true;
 	}
 
-	public static void makeOrder(SqlOrder order) throws MakeOrderException{
-		//to do
+	public static void makeOrder(SqlOrder order) throws MakeOrderException, SQLWorkException{
+		Connection connection = SqlServices.getConnection();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"INSERT INTO `temp_orders` (`cost`, `sale`, `userId`, `finishTime`, `jsonOrder`) "
+							+ "VALUES (?, ?, ?, ?, ?);"
+					);
+			preparedStatement.setDouble(1, order.cost);	//cost
+			preparedStatement.setDouble(2, order.sale);	//sale
+			preparedStatement.setLong(3, order.userId);	//userId
+			preparedStatement.setDate(4, new java.sql.Date(order.finishTime.getTime()));	//finishTime
+			preparedStatement.setString(5, order.jsonOrder);	//jsonOrder
+
+			int code = preparedStatement.executeUpdate();
+
+			if (code != 1)
+				throw new SQLWorkException(code, "can't insert in table in MaleOrder");
+		} catch (SQLException e) {
+			throw new SQLWorkException(e);
+		} finally {
+			SqlServices.closeConnection(connection);
+		}
 	}
 }
-

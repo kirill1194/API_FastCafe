@@ -1,5 +1,6 @@
 package resources;
 
+
 import java.util.ArrayList;
 
 import javax.ws.rs.GET;
@@ -7,7 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import Exceptions.SQLWorkException;
-import Items.CategoryItem;
+import Items.http.response.CategoryItem;
 import SQL.SqlFunctions;
 
 @Path("/getCategories/")

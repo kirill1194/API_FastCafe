@@ -1,4 +1,4 @@
-package Items;
+package Items.http.request;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
